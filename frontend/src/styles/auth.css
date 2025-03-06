@@ -1,0 +1,66 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.auth-box {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-image {
+  width: 100px;
+  height: auto;
+  margin-bottom: 16px;
+}
+
+.auth-box h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.auth-box input,
+.auth-box button {
+  display: block;
+  width: 100%;  
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.auth-box button {
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+}
+
+.auth-box button:hover {
+  background-color: #2980b9;  
+}
+
+.auth-box input {
+  margin-bottom: 20px;  
+}
+
+.auth-box p {
+  margin-top: 10px;
+}
+
+.auth-box span {
+  color: #3498db;
+  cursor: pointer;
+}
