@@ -46,7 +46,7 @@ export default function AdminDashboard() {
     if (window.confirm("Are you sure you want to log out?")) {
       localStorage.removeItem("adminToken");
       sessionStorage.removeItem("adminSession");
-      navigate("/");
+      navigate("/login");
     }
   };
 

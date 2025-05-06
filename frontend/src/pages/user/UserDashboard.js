@@ -1,25 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
+import axios from "axios";
 import { 
-  Search, BookOpen, BarChart2, Clock, FileText, 
-  HelpCircle, User, LogOut, Menu, X 
+  BookOpen, BarChart2, Clock, FileText, 
+  HelpCircle, User, LogOut, Menu, X, Mail, AlertCircle
 } from "lucide-react";
 import "../../styles/user.css";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showTipsModal, setShowTipsModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
-
-  const handleSearch = () => {
-    console.log("Searching for:", searchQuery);
-  };
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  
+  useEffect(() => {
+    const verifyToken = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate('/');
+        return;
+      }
+      
+      try {
+        // Kiểm tra token có hợp lệ không
+        const API_URL = "http://localhost:5000";
+        await axios.get(`${API_URL}/me`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        // Token hợp lệ, không làm gì cả
+      } catch (error) {
+        console.error("Token validation error:", error);
+        localStorage.removeItem("token");
+        navigate('/');
+      }
+    };
+    
+    verifyToken();
+  }, [navigate]);
   
   const handleLogout = () => {
-    navigate('/');
+    localStorage.removeItem("token");
+    navigate('/login');
   };
   
   const handleTipsClick = () => {
@@ -28,6 +53,31 @@ const UserDashboard = () => {
   
   const handleHelpClick = () => {
     setShowHelpModal(true);
+  };
+
+  const handleProfileClick = async () => {
+    setLoading(true);
+    setShowProfileModal(true);
+    
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate('/');
+        return;
+      }
+      
+      const API_URL = "http://localhost:5000";
+      const response = await axios.get(`${API_URL}/me`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      console.log("User profile data:", response.data);
+      setUserData(response.data);
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -46,7 +96,10 @@ const UserDashboard = () => {
           </nav>
 
           <div className="user-controls">
-            <Button className="user-button" onClick={() => navigate('/profile')}>
+            <Button 
+              className="user-button" 
+              onClick={handleProfileClick}
+            >
               <User size={18} />
               <span>Profile</span>
             </Button>
@@ -69,7 +122,7 @@ const UserDashboard = () => {
             <Button className="mobile-nav-link" onClick={() => navigate('/')}>Home</Button>
             <Button className="mobile-nav-link" onClick={handleTipsClick}>Tips & Guides</Button>
             <Button className="mobile-nav-link" onClick={handleHelpClick}>Help</Button>
-            <Button className="mobile-nav-link" onClick={() => navigate('/profile')}>Profile</Button>
+            <Button className="mobile-nav-link" onClick={handleProfileClick}>Profile</Button>
             <Button className="mobile-nav-link" onClick={handleLogout}>Logout</Button>
           </div>
         )}
@@ -231,6 +284,66 @@ const UserDashboard = () => {
         </div>
       )}
 
+      {showProfileModal && (
+        <div className="modal-backdrop" onClick={() => setShowProfileModal(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>My Profile</h2>
+              <Button className="close-button" onClick={() => setShowProfileModal(false)}>
+                <X size={24} />
+              </Button>
+            </div>
+            <div className="modal-body">
+              {loading ? (
+                <div className="text-center p-4">
+                  <div className="w-10 h-10 border-4 border-t-blue-600 border-blue-200 rounded-full animate-spin mx-auto"></div>
+                  <p className="mt-3 text-gray-600">Loading profile information...</p>
+                </div>
+              ) : !userData ? (
+                <div className="text-center p-4">
+                  <AlertCircle className="w-12 h-12 text-amber-500 mx-auto" />
+                  <p className="mt-3 text-gray-600">Could not load profile information</p>
+                </div>
+              ) : (
+                <div className="profile-info">
+                  <div className="profile-item">
+                    <div className="item-icon">
+                      <User className="text-blue-600" />
+                    </div>
+                    <div className="item-content">
+                      <h4>Username</h4>
+                      <p>{userData.username}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="profile-item">
+                    <div className="item-icon">
+                      <Mail className="text-blue-600" />
+                    </div>
+                    <div className="item-content">
+                      <h4>Email</h4>
+                      <p>{userData.email}</p>
+                    </div>
+                  </div>
+                  
+                  {userData.role && (
+                    <div className="profile-item">
+                      <div className="item-icon">
+                        <User className="text-blue-600" />
+                      </div>
+                      <div className="item-content">
+                        <h4>Role</h4>
+                        <p>{userData.role}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       <div 
         className="dashboard-container" 
         style={{ 
@@ -243,25 +356,6 @@ const UserDashboard = () => {
           <div className="header">
             <h1 className="dashboard-title">IELTS Reading Practice</h1>
             <p className="dashboard-subtitle">Improve your reading skills with customized practice</p>
-            
-            <div className="search-container">
-              <div className="search-bar">
-                <Search className="search-icon" />
-                <input 
-                  type="text" 
-                  placeholder="Search previous tests..." 
-                  className="search-input"
-                  value={searchQuery} 
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <Button 
-                  className="find-button"
-                  onClick={handleSearch}
-                >
-                  Find
-                </Button>
-              </div>
-            </div>
           </div>
           
           <div className="practice-button-container">

@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+transformers
+torch
+python-dotenv
+tiktoken
+protobuf
+blobfile
+sentencepiece

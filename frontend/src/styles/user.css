@@ -523,3 +523,42 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+/* Profile Modal Styles */
+.profile-info {
+  padding: 1rem;
+}
+
+.profile-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.profile-item:last-child {
+  border-bottom: none;
+}
+
+.item-icon {
+  margin-right: 1rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ebf5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-content h4 {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+}
+
+.item-content p {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1e293b;
+}

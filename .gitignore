@@ -1,0 +1,6 @@
+inference_service/.venv/
+backend/.env
+frontend/.env
+backend/node_modules/
+frontend/node_modules/
+inference_service/__pycache__/

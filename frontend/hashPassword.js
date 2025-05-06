@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt'); // Hoặc 'bcryptjs' nếu bạn dùng bcryptjs
+const bcrypt = require('bcrypt'); 
 const password = '123456';
-const saltRounds = 10;  // Số vòng salt
+const saltRounds = 10; 
 
 bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
   if (err) {

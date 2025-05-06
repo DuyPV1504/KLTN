@@ -1,0 +1,7 @@
+# ...existing code...
+# Không theo dõi các file lỗi thời
+/controllers/
+/routes/
+/models/
+/server.js
+# ...existing code...
