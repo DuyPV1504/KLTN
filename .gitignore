@@ -1,6 +1,10 @@
-inference_service/.venv/
+inference_service/.env
+inference_service/.venv
 backend/.env
 frontend/.env
 backend/node_modules/
 frontend/node_modules/
 inference_service/__pycache__/
+data/ielts_dataset/ielts_labeled_dataset.csv
+data/ielts_dataset/ielts_labeled_dataset_dev.csv
+data/ielts_dataset/ielts_labeled_dataset_test.csv

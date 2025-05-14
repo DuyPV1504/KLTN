@@ -460,6 +460,42 @@
   cursor: not-allowed;
 }
 
+.answer-option-selected {
+  background-color: #e6f2ff !important;
+  border: 2px solid #3b82f6 !important;
+  font-weight: 600;
+}
+
+.answer-option-correct {
+  background-color: #ecfdf5 !important;
+  border: 2px solid #10b981 !important;
+  font-weight: 600;
+}
+
+.answer-option-incorrect {
+  background-color: #fef2f2 !important;
+  border: 2px solid #ef4444 !important;
+  font-weight: 600;
+}
+
+.ynng-option.selected {
+  background-color: #e6f2ff !important;
+  border: 2px solid #3b82f6 !important;
+  font-weight: 600;
+}
+
+.ynng-option.correct {
+  background-color: #ecfdf5 !important;
+  border: 2px solid #10b981 !important;
+  font-weight: 600;
+}
+
+.ynng-option.incorrect {
+  background-color: #fef2f2 !important;
+  border: 2px solid #ef4444 !important;
+  font-weight: 600;
+}
+
 .file-upload-label {
   display: flex;
   align-items: center;

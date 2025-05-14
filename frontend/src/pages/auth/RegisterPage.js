@@ -48,7 +48,7 @@ export default function RegisterPage() {
     try {
       const API_URL = "http://localhost:5000";
       const response = await axios.post(`${API_URL}/register`, { 
-        username, // Đảm bảo gửi username
+        username, 
         email, 
         password 
       });

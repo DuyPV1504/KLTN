@@ -44,7 +44,6 @@ const History = () => {
           currentPage 
         });
 
-        // Build query parameters
         const params = new URLSearchParams();
         if (activeTab !== "all") {
           params.append('practiceType', activeTab.toUpperCase());
@@ -87,7 +86,6 @@ const History = () => {
 
   const handleSearch = () => {
     setCurrentPage(1);
-    // The useEffect will trigger the API call
   };
 
   const handlePageChange = (page) => {
@@ -96,13 +94,12 @@ const History = () => {
   };
 
   const formatTime = (timeString) => {
-    if (!timeString) return "N/A"; // Handle missing timeSpent
+    if (!timeString) return "N/A";
     const [minutes, seconds] = timeString.split(':');
     return `${minutes}m ${seconds}s`;
   };
 
   const formatDate = (dateString) => {
-    // Since there's no date field in your database, return a default
     return "No date available";
   };
 
@@ -151,7 +148,6 @@ const History = () => {
           </button>
         </div>
 
-        {/* Search and Filter Section */}
         <div className="filter-section">
           <div className="search-container">
             <input
@@ -196,7 +192,6 @@ const History = () => {
           </div>
         </div>
 
-        {/* Loading State */}
         {loading && (
           <div className="empty-state">
             <div className="loading-spinner"></div>
@@ -204,7 +199,6 @@ const History = () => {
           </div>
         )}
 
-        {/* Error State */}
         {error && !loading && (
           <div className="empty-state">
             <AlertCircle className="empty-icon" />
@@ -215,7 +209,6 @@ const History = () => {
               onClick={() => {
                 setCurrentPage(1);
                 setError(null);
-                // The useEffect will retry fetching data
               }}
             >
               Try Again
@@ -223,7 +216,6 @@ const History = () => {
           </div>
         )}
 
-        {/* History List with your simplified card layout */}
         {!loading && !error && (
           <div className="history-list">
             {history.length === 0 ? (
@@ -283,7 +275,6 @@ const History = () => {
           </div>
         )}
 
-        {/* Pagination */}
         {!loading && !error && history.length > 0 && pagination.totalPages > 1 && (
           <div className="pagination">
             <button 

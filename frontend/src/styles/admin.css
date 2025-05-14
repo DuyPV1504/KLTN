@@ -1,11 +1,9 @@
-/* Admin Dashboard Layout */
 .admin-dashboard {
   display: flex;
   min-height: 100vh;
   background-color: #f1f5f9;
 }
 
-/* Sidebar Styles - Improved */
 .admin-sidebar {
   width: 280px;
   background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
@@ -214,7 +212,6 @@
   cursor: pointer;
 }
 
-/* Header Styles */
 .admin-header {
   display: flex;
   justify-content: space-between;

@@ -1,5 +1,8 @@
 const axios = require('axios');
+const Passage = require('../models/Passage');
+const Question = require('../models/Question');
 const History = require('../models/History');
+
 
 /**
  * Generate IELTS reading practice questions
@@ -10,7 +13,6 @@ const generateQuestions = async (req, res) => {
   try {
     const { text, questionType, num_questions } = req.body;
 
-    // Gọi inference service để sinh câu hỏi
     const statementsResponse = await axios.post(
       `${process.env.PYTHON_INFERENCE_URL}/generate_questions`,
       {
@@ -22,7 +24,6 @@ const generateQuestions = async (req, res) => {
     
     const statements = statementsResponse.data.statements;
     
-    // Gọi endpoint evaluate_answers để lấy đáp án và giải thích
     const evaluateResponse = await axios.post(
       `${process.env.PYTHON_INFERENCE_URL}/evaluate_answers`,
       {
@@ -34,7 +35,6 @@ const generateQuestions = async (req, res) => {
     
     const results = evaluateResponse.data.results;
     
-    // Định dạng lại kết quả để phù hợp với frontend
     const formattedQuestions = results.map((item, index) => ({
       id: index + 1,
       text: item.statement,
@@ -56,30 +56,56 @@ const generateQuestions = async (req, res) => {
  */
 const saveResults = async (req, res) => {
   try {
-    const { passage, practiceType, score, questions } = req.body;
-    // Use req.user from the auth middleware
-    const userId = req.user.id;
+    const { passageContent, practiceType, score, questions, answers } = req.body;
     
-    if (!passage || !practiceType || score === undefined || !questions) {
+    // Check if user is authenticated
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ 
+        message: 'You must be logged in to save results',
+        notLoggedIn: true
+      });
+    }
+    
+    if (!passageContent || !practiceType || score === undefined || !questions || !answers) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
     
-    // Create new history entry
-    const newHistory = new History({
-      user: userId,
-      passage,
+    // 1. First save the passage
+    const passage = new Passage({
+      user: req.user.id,
+      content: passageContent
+    });
+    await passage.save();
+    
+    // 2. Save all questions
+    const savedQuestions = [];
+    for (const q of questions) {
+      const question = new Question({
+        passage: passage._id,
+        statement: q.text,
+        label: q.correctAnswer,
+        explanation: q.explanation
+      });
+      await question.save();
+      savedQuestions.push({
+        questionId: question._id,
+        userAnswer: answers.find(a => a.id === q.id)?.answer || ""
+      });
+    }
+    
+    // 3. Save history directly
+    const history = new History({
+      user: req.user.id,
+      passage: passage._id,
       practiceType,
       score,
-      questions,
-      date: new Date()
+      answers: savedQuestions
     });
     
-    await newHistory.save();
-    
-    return res.json({ 
+    await history.save();
+    return res.status(201).json({ 
       success: true, 
-      historyId: newHistory._id,
-      message: 'Practice results saved successfully' 
+      historyId: history._id 
     });
     
   } catch (error) {

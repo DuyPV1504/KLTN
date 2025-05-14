@@ -71,7 +71,6 @@ const Practice = () => {
     setErrorMessage("");
     setGenerationProgress(10);
   
-    // Khai báo biến để lưu interval ID
     let progressInterval;
   
     try {
@@ -83,7 +82,6 @@ const Practice = () => {
         } questions`
       );
   
-      // Cập nhật progress trong khi chờ API
       progressInterval = setInterval(() => {
         setGenerationProgress(prev => {
           if (prev >= 90) {
@@ -94,31 +92,26 @@ const Practice = () => {
         });
       }, 500);
   
-      // Lấy token trước khi gọi API
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("Authentication required. Please log in again.");
-      }
+      // const token = localStorage.getItem("token");
+      // if (!token) {
+      //   throw new Error("Authentication required. Please log in again.");
+      // }
   
-      // Thực sự gọi API
       const response = await axios.post(
         `${API_URL}/api/practice/generate`,
         { text, questionType, num_questions: 6 },
-        { headers: { Authorization: `Bearer ${token}` } }
+        // { headers: { Authorization: `Bearer ${token}` } }
       );
   
-      // Clear progress và đẩy lên 100%
       clearInterval(progressInterval);
       setGenerationProgress(100);
   
-      // Xử lý kết quả trả về
       const generatedQuestions = response.data.questions;
       setQuestions(generatedQuestions);
       setUserAnswers({});
       setSubmitted(false);
   
-      // Khởi tạo timer cho session
-      const timeLimit = 20 * 60; // 20 phút
+      const timeLimit = 20 * 60; 
       setTimeRemaining(timeLimit);
       const newTimer = setInterval(() => {
         setTimeRemaining(prev => {
@@ -133,7 +126,6 @@ const Practice = () => {
       setTimer(newTimer);
   
     } catch (error) {
-      // Khi có lỗi, vẫn clear interval và show error
       if (progressInterval) clearInterval(progressInterval);
       console.error("Error generating questions:", error);
       setErrorMessage(
@@ -218,13 +210,11 @@ const Practice = () => {
 
   const handleSaveResults = async () => {
     try {
-      // Get token for authentication
       const token = localStorage.getItem('token');
       if (!token) {
         throw new Error("Authentication required. Please log in again.");
       }
 
-      // Prepare data for saving
       const resultsData = {
         passage: text,
         practiceType: questionType,
@@ -239,8 +229,6 @@ const Practice = () => {
       };
       
       console.log("Saving results:", resultsData);
-      
-      // Call the API to save results
       const response = await axios.post(
         `${API_URL}/api/practice/save`, 
         resultsData,
@@ -249,7 +237,6 @@ const Practice = () => {
       
       console.log("Results saved:", response.data);
       
-      // Navigate to the history page to view the saved result
       navigate("/history");
       
     } catch (error) {
@@ -519,32 +506,54 @@ const Practice = () => {
                               return (
                                 <div 
                                   key={option}
-                                  className={`flex items-center cursor-pointer ${!submitted ? "hover:bg-gray-50" : ""}`}
+                                  className={`flex items-center cursor-pointer p-2 rounded-md ${
+                                    !submitted ? "hover:bg-gray-50" : ""
+                                  } ${
+                                    isSelected && !submitted ? "answer-option-selected" : ""
+                                  } ${
+                                    submitted && resultsViewed && isSelected && isSelected !== question.correctAnswer ? "answer-option-incorrect" : ""
+                                  } ${
+                                    submitted && resultsViewed && isCorrect ? "answer-option-correct" : ""
+                                  } ${
+                                    questionType === "YNNG" ? "ynng-option" : ""
+                                  } ${
+                                    questionType === "YNNG" && isSelected ? "selected" : ""
+                                  } ${
+                                    questionType === "YNNG" && submitted && resultsViewed && isCorrect ? "correct" : ""
+                                  } ${
+                                    questionType === "YNNG" && submitted && resultsViewed && isSelected && isSelected !== question.correctAnswer ? "incorrect" : ""
+                                  }`}
                                   onClick={() => !submitted && handleAnswerSelect(question.id, option)}
                                 >
                                   <div className={`
                                     w-5 h-5 rounded-full border flex items-center justify-center
-                                    ${isSelected ? "border-2 border-blue-500" : "border border-gray-400"}
-                                    ${submitted && resultsViewed && isCorrect ? "border-2 border-green-500" : ""}
+                                    ${isSelected ? "border-2 border-blue-600" : "border border-gray-400"}
+                                    ${submitted && resultsViewed && isCorrect ? "border-2 border-green-600" : ""}
+                                    ${submitted && resultsViewed && isSelected && isSelected !== question.correctAnswer ? "border-2 border-red-600" : ""}
                                   `}>
                                     {isSelected && (
-                                      <div className="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
+                                      <div className={`w-3 h-3 rounded-full ${
+                                        submitted && resultsViewed && isSelected !== question.correctAnswer 
+                                          ? "bg-red-600" 
+                                          : "bg-blue-600"
+                                      }`}></div>
                                     )}
                                   </div>
                                   
                                   <span className={`ml-2 ${
-                                    submitted && resultsViewed && isCorrect ? "font-bold text-green-700" :
-                                    isSelected ? "font-medium" : ""
+                                    submitted && resultsViewed && isCorrect ? "font-bold text-green-800" :
+                                    submitted && resultsViewed && isSelected && isSelected !== question.correctAnswer ? "font-bold text-red-800" :
+                                    isSelected ? "font-bold text-blue-800" : ""
                                   }`}>
                                     {option}
                                   </span>
                                   
-                                  {submitted && resultsViewed && isSelected && (
-                                    isSelected === question.correctAnswer ? (
-                                      <CheckCircle className="w-4 h-4 text-green-500 ml-2" />
-                                    ) : (
-                                      <XCircle className="w-4 h-4 text-red-500 ml-2" />
-                                    )
+                                  {submitted && resultsViewed && (
+                                    (isCorrect ? (
+                                      <CheckCircle className="w-5 h-5 text-green-600 ml-auto" />
+                                    ) : (isSelected && !isCorrect) ? (
+                                      <XCircle className="w-5 h-5 text-red-600 ml-auto" />
+                                    ) : null)
                                   )}
                                 </div>
                               );

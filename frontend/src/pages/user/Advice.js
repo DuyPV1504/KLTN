@@ -122,7 +122,6 @@ const Advice = () => {
           <h1 className="page-title">IELTS Reading Advice & Tips</h1>
         </div>
 
-        {/* Introduction */}
         <div className="advice-card">
           <div className="card-header">
             <BookOpen className="card-icon text-blue-600" />
@@ -160,7 +159,6 @@ const Advice = () => {
           </div>
         </div>
 
-        {/* True/False/Not Given Tips */}
         <div className="advice-card">
           <div className="card-header">
             <CheckCircle className="card-icon text-green-600" />
@@ -183,7 +181,6 @@ const Advice = () => {
           </div>
         </div>
 
-        {/* Yes/No/Not Given Tips */}
         <div className="advice-card">
           <div className="card-header">
             <AlertCircle className="card-icon text-orange-600" />
@@ -206,7 +203,6 @@ const Advice = () => {
           </div>
         </div>
 
-        {/* General Reading Tips */}
         <div className="advice-card">
           <div className="card-header">
             <Award className="card-icon text-blue-600" />

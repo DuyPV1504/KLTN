@@ -70,6 +70,15 @@ export default function LoginPage() {
     }
   };
   
+  const handleGuestLogin = () => {
+    setIsLoading(true);
+    localStorage.setItem("token", "guest-token");
+    setTimeout(() => {
+      navigate("/practice");
+      setIsLoading(false);
+    }, 500);
+  };
+  
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleLogin();
@@ -187,6 +196,19 @@ export default function LoginPage() {
           >
             {isLoading ? "Logging in..." : "Login"}
           </motion.button>
+          
+          <div className="guest-login-container">
+            <span className="guest-login-divider">or</span>
+            <motion.button 
+              className="guest-login-button"
+              onClick={handleGuestLogin}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              disabled={isLoading}
+            >
+              Continue without create an account
+            </motion.button>
+          </div>
         </div>
 
         <div className="form-footer">

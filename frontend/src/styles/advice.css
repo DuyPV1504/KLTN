@@ -84,7 +84,6 @@
   max-width: 48rem;
 }
 
-/* Thay đổi lại định dạng card về dạng bảng */
 
 .advice-card {
   background-color: white;
@@ -102,26 +101,23 @@
   transform: translateY(-4px);
 }
 
-/* Sửa card-header để dạng bảng */
 .card-header {
   display: flex;
-  align-items: center; /* Căn giữa theo chiều dọc */
-  gap: 0.75rem; /* Khoảng cách giữa icon và text */
+  align-items: center; 
+  gap: 0.75rem; 
   margin-bottom: 1rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid #e2e8f0;
-  flex-wrap: nowrap; /* Ngăn không cho các phần tử xuống dòng */
+  flex-wrap: nowrap; 
 }
 
-/* Đảm bảo icon không bị co lại */
 .card-icon {
   width: 20px;
   height: 20px;
-  flex-shrink: 0; /* Ngăn icon co lại */
+  flex-shrink: 0; 
   color: #3182ce;
 }
 
-/* Đảm bảo card-title nằm cạnh icon */
 .card-title {
   margin: 0;
   font-size: 1.25rem;
@@ -131,14 +127,13 @@
   flex: 1;
 }
 
-/* Đảm bảo responsive cho màn hình nhỏ */
 @media (max-width: 640px) {
   .card-header {
-    flex-direction: row; /* Vẫn giữ layout ngang */
+    flex-direction: row; 
   }
   
   .card-title {
-    font-size: 1.25rem; /* Giảm kích thước font cho màn hình nhỏ */
+    font-size: 1.25rem; 
   }
 }
 
@@ -149,7 +144,6 @@
   margin-bottom: 1rem;
 }
 
-/* Định dạng lại tip-item để giống dạng bảng */
 .tip-item {
   border: 1px solid #e2e8f0;
   border-radius: 0.375rem;
@@ -175,7 +169,6 @@
   width: 3px;
 }
 
-/* Tinh chỉnh đường viền màu cho các loại tip */
 .tfng-tip::before {
   background-color: #48bb78;
 }
@@ -184,7 +177,6 @@
   background-color: #ed8936;
 }
 
-/* Điều chỉnh kiểu hiển thị của general tips */
 .general-tip {
   display: flex;
   flex-direction: row;
@@ -386,7 +378,6 @@
   }
 }
 
-/* Đối với các tab */
 .tab-item {
   display: flex;
   flex-direction: row;
@@ -394,15 +385,11 @@
   gap: 0.5rem;
 }
 
-/* Text chính của tab luôn hiển thị đầu tiên */
 .tab-item .primary-text,
 .tab-item strong {
   order: -1;
 }
 
-/* Thêm grid layout cho các advice-card */
-
-/* Tips Grid - Hiện tại đã có nhưng chỉ áp dụng cho các tip-item */
 .advice-card-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -410,7 +397,6 @@
   margin: 2rem 0;
 }
 
-/* Responsive cho advice-card-grid */
 @media (min-width: 768px) {
   .advice-card-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -423,7 +409,6 @@
   }
 }
 
-/* Điều chỉnh để icon nằm trong vùng trên cùng của card */
 .card-icon-wrapper {
   width: 48px;
   height: 48px;
@@ -434,7 +419,6 @@
   margin-bottom: 1rem;
 }
 
-/* Màu nền cho các loại card */
 .tfng-icon-wrapper {
   background-color: rgba(72, 187, 120, 0.1);
 }
@@ -447,13 +431,11 @@
   background-color: rgba(66, 153, 225, 0.1);
 }
 
-/* Icon lớn hơn */
 .card-icon-large {
   width: 24px;
   height: 24px;
 }
 
-/* Đối với các card feature */
 .feature-card {
   display: flex;
   flex-direction: column;
@@ -467,7 +449,6 @@
   margin-bottom: 0.75rem;
 }
 
-/* Button ở dưới cùng của card */
 .card-button {
   margin-top: auto;
   padding: 0.75rem 1.5rem;

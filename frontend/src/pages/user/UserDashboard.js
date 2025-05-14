@@ -26,12 +26,10 @@ const UserDashboard = () => {
       }
       
       try {
-        // Kiểm tra token có hợp lệ không
         const API_URL = "http://localhost:5000";
         await axios.get(`${API_URL}/me`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        // Token hợp lệ, không làm gì cả
       } catch (error) {
         console.error("Token validation error:", error);
         localStorage.removeItem("token");
